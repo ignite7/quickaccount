@@ -13,5 +13,7 @@ import pytest
 from cli import *
 
 
-def test_create_options():
-    assert create_options() == '1' or create_options() == '2'
+def test_select_option():
+    test = SelectOption()
+    
+    assert test.provider('1') == print('OK')

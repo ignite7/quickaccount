@@ -2,40 +2,66 @@
 CLI
 """
 
-from main import CreateRamdonAccount, CreateManuallyAccount
+from main import CreateRamdonAccount
+from main import CreateManuallyAccount
 
-def create_option():
+
+class SelectOption(CreateRamdonAccount, CreateManuallyAccount):
     """
     Introduction what the user wants.
     """
     
-    print('Welcome, please select one option:')
-    print('What do you want to do?')
-    print(
-        '1- Create random account\n'
-        '2- Create manual account\n'
-    )    
+    def __init__(self, *args, **kwargs):        
+        option = input(
+            'Welcome, what do you want to do?\n'
+            '\n1- Create RANDOM account'
+            '\n2- Create MANUAL account\n'
+            '\nChoose: '
+        )
+
+        self.selected_option(option)
+        
+    def selected_option(self, option):
+        if option != '1' and option != '2':
+            self.__init__()
+            
+        self.provider(option)              
     
-    option = input('Option: ')
-    
-    while option != '1' and option != '2':
-        option = input('Select correct option: ')
+    def provider(self, option):
+        message_provider = (
+            '\nChoose the service provider:\n'
+            '\n1- Gmail\n'
+            '2- Hotmail\n'
+            '3- Yahoo\n'
+            '4- Proton mail\n'
+            '5- Temporary mail\n'
+            '\nChoose: '
+        )
+        
+        provider = input(message_provider)
+        
+        while provider != '1' and provider != '2' and\
+            provider != '3' and provider != '4' and\
+            provider != '5':
                     
-        if option == '1' or option == '2':
-            return option
- 
-    return option
+            provider = input(message_provider)
+                    
+            if provider == '1' or provider == '2' or\
+                provider == '3' or provider == '4' or\
+                provider == '5':
+                
+                if option == '1':            
+                    self.random_provider(provider)
+                
+                else:
+                    pass
+                
+        if option == '1':            
+            self.random_provider(provider)
+                
+        else:
+            pass
 
-
-def service_option():
-    pass
 
 if __name__ == '__main__':
-    selected_option = create_option()
-    selected_service = service_option()
-    
-    if selected_option == '1':
-        CreateRamdonAccount(selected_service)
-        
-    elif selected_option == '2':
-        CreateManuallyAccount(selected_service)
+    SelectOption()
