@@ -89,11 +89,7 @@ class CreateRamdonAccount:
             )
         ).send_keys(data['username'])
         
-        Keys.ENTER
-        
-        #self.driver.find_element_by_name('submitBtn').click()
-        
-        #self.driver.find_element_by_id('confirmModalBtn').click()
+        self.driver.find_element_by_tag_name('button')
         
         self.driver.close()
         
