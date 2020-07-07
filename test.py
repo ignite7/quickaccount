@@ -34,12 +34,6 @@ class QuickAccount(unittest.TestCase):
         self.driver = webdriver.Chrome(executable_path='./chromedriver')
         self.driver.get('https://mail.protonmail.com/create/new?language=en')
         self.driver.maximize_window()
-    
-    def test_username_short(self):
-        # self.driver.implicitly_wait(3)   
-        self.driver.switch_to_frame(self.driver.find_element_by_tag_name(
-            'iframe'
-        ))
            
     def test_write_username(self):
         """
@@ -48,23 +42,34 @@ class QuickAccount(unittest.TestCase):
         
         WebDriverWait(self.driver, 5).until(
             EC.frame_to_be_available_and_switch_to_it(
-                (By.XPATH, "//div[@class='usernameWrap']//iframe[@title='Registration form']")
+                (By.CLASS_NAME, 'top')
             )
         )
         
         WebDriverWait(self.driver, 5).until(
             EC.element_to_be_clickable(
-                (By.XPATH, "//input[@class='input' and @id='username']")
+                (By.ID, 'username')
             )
-        ).send_keys('hola')
+        ).send_keys('pepe')
+        
+        self.driver.switch_to.default_content()
         
     def test_write_password(self):
         """
         Write the password.
         """
         
-        self.driver.find_element_by_name('password').send_keys('example')
-        self.driver.find_element_by_name('passwordc').send_keys('example')
+        WebDriverWait(self.driver, 5).until(
+            EC.element_to_be_clickable(
+                (By.ID, 'password')
+            )
+        ).send_keys('example')
+        
+        WebDriverWait(self.driver, 5).until(
+            EC.element_to_be_clickable(
+                (By.ID, 'passwordc')
+            )
+        ).send_keys('example')
     
     def test_create_account(self):
         """
@@ -72,8 +77,32 @@ class QuickAccount(unittest.TestCase):
         the account.
         """
         
-        self.driver.find_element_by_xpath(
-            '//button[@type="submit"]'
+        WebDriverWait(self.driver, 5).until(
+            EC.frame_to_be_available_and_switch_to_it(
+                (By.XPATH, '/html/body/div[2]/div/div/div/div[1]/form/div[2]/section/div/div[2]/iframe')
+            )
+        )
+        
+        WebDriverWait(self.driver, 5).until(
+            EC.element_to_be_clickable(
+                (By.XPATH, '/html/body/div/div/footer/button')
+            )
+        ).click()
+        
+        self.driver.switch_to.default_content()
+        
+    def test_modal_submit(self):
+        """
+        Last accept in a modal window.
+        
+        Note: the element in this point it will
+        be invisible for the user.
+        """
+        
+        WebDriverWait(self.driver, 10).until(
+            EC.invisibility_of_element_located(
+                (By.ID, 'confirmModalBtn')
+            )
         )
         
     def tearDown(self):

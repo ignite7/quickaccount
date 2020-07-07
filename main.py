@@ -73,27 +73,63 @@ class CreateRamdonAccount:
         This method copy the info in the DOM.
         """
         
-        self.driver.find_element_by_id('password').send_keys(data['password'])
-        
-        self.driver.find_element_by_id('passwordc').send_keys(data['password'])
-        
         WebDriverWait(self.driver, 10).until(
             EC.frame_to_be_available_and_switch_to_it(
-                (By.XPATH, "//div[@class='usernameWrap']//iframe[@title='Registration form']")
+                (By.CLASS_NAME, 'top')
             )
         )
         
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable(
-                (By.XPATH, "//input[@class='input' and @id='username']")
+                (By.ID, 'username')
             )
         ).send_keys(data['username'])
         
-        self.driver.find_element_by_tag_name('button')
+        self.driver.switch_to.default_content()
+        
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(
+                (By.ID, 'password')
+            )
+        ).send_keys(data['password'])
+        
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(
+                (By.ID, 'passwordc')
+            )
+        ).send_keys(data['password'])
+        
+        WebDriverWait(self.driver, 10).until(
+            EC.frame_to_be_available_and_switch_to_it(
+                (By.XPATH, '/html/body/div[2]/div/div/div/div[1]/form/div[2]/section/div/div[2]/iframe')
+            )
+        )
+        
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(
+                (By.XPATH, '/html/body/div/div/footer/button')
+            )
+        ).click()
+        
+        self.driver.switch_to.default_content()
+        
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(
+                (By.ID, 'confirmModalBtn')
+            )
+        ).click()
+        
+        # Needs to be fixed!
+        WebDriverWait(self.driver, 10).until(
+            EC.element_to_be_clickable(
+                (By.XPATH, '/html/body/div[2]/div/div/div/form/div/div/div[2]/label/div/input')
+            )
+        ).click()
+        
+        time.sleep(10)
         
         self.driver.close()
-        
-        time.sleep(30)
+        self.driver.quit()
         
         
 class CreateManuallyAccount:
