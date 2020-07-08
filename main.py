@@ -2,19 +2,18 @@
 Main 
 """
 
-# Imports
+# Selenium
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
-
 # Utilities
 import time
 import random
 import string
+import getpass
 
 
 class CreateRamdonAccount:
@@ -28,22 +27,10 @@ class CreateRamdonAccount:
         
         if provider == '1':
             self.driver.get('https://mail.protonmail.com/create/new?language=en')
-            
-            #return print('OK') # Test
+            self.ramdom_data()
             
         elif provider == '2':
-            pass
-        
-        elif provider == '3':
-            pass
-        
-        elif provider == '4':
-            pass
-        
-        elif provider == '5':
-            pass
-            
-        self.ramdom_data()
+            self.driver.get('https://temp-mail.org/en/')
         
     def ramdom_data(self):
         """
@@ -51,22 +38,23 @@ class CreateRamdonAccount:
         about the account.
         """
         
-        abc = random.choices(string.ascii_letters, k=8)
+        abc_lw = random.choices(string.ascii_lowercase, k=8)
+        abc_up = random.choices(string.ascii_uppercase, k=6)
         number = random.choices(string.digits, k=4) 
         symbols = random.choices(
             '! ? - / _ " *'.split(' '),
             k=2
         )
         
-        joiner_username = abc + number
-        joiner_password = abc + number + symbols
+        joiner_username = abc_lw + number
+        joiner_password = abc_up + number + symbols + abc_lw
         
-        data = {
+        self.data = {
             'username': ''.join(sorted(joiner_username)),
             'password': ''.join(sorted(joiner_password))
         }
         
-        self.random_dom_elements(data)
+        self.random_dom_elements(self.data)
         
     def random_dom_elements(self, data):
         """
@@ -119,7 +107,16 @@ class CreateRamdonAccount:
             )
         ).click()
         
-        time.sleep(60)
+        print('You have 1 minute to fisnish the verification\n')
+        
+        for seconds in range(1, 61):
+            time.sleep(seconds)
+            
+            if seconds == 1:
+                print('{} Second\n'.format(seconds))
+            
+            else:
+                print('{} Seconds\n'.format(seconds))
         
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable(
@@ -130,6 +127,30 @@ class CreateRamdonAccount:
         self.driver.close()
         self.driver.quit()
         
+        self.random_resume_data(data)
+        
+    def random_resume_data(self, data):
+        """
+        It going to shows the resume of the
+        random data.
+        """
+        
+        path = '/home/{}/protonmail_account.txt'.format(
+            getpass.getuser()
+        )
+        
+        with open(path, 'a+') as file:
+            file.write(
+                'PROTON MAIL ACCOUNTS:\n Username: {}\n Password: {}\n'.format(
+                    data['username'],
+                    data['password']
+                )
+            )
+        
+        print(
+            'The acccount has been created successfully, ',
+            'you can find the account in: {}'.format(path) 
+        )
         
 class CreateManuallyAccount:
     
