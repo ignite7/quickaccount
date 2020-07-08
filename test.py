@@ -105,6 +105,64 @@ class QuickAccount(unittest.TestCase):
             )
         )
         
+    def test_select_radio_button(self):
+        """
+        Select the email option to verified
+        we're humans.
+        
+        Note: the element in this point it will
+        be invisible for the user.
+        """
+        
+        WebDriverWait(self.driver, 10).until(
+            EC.invisibility_of_element_located(
+                (By.CSS_SELECTOR, '#verification-panel > div.humanVerification-block-email > label')
+            )
+        )
+        
+    def test_write_email_verification(self):
+        """
+        Write the email verification.
+        
+        Note: the element in this point it will
+        be invisible for the user.
+        """
+        
+        WebDriverWait(self.driver, 10).until(
+            EC.invisibility_of_element_located(
+                (By.ID, 'emailVerification')
+            )
+        )
+        
+        
+    def test_send_email_verification(self):
+        """
+        Send the email verification.
+        
+        Note: the element in this point it will
+        be invisible for the user.
+        """
+        
+        WebDriverWait(self.driver, 10).until(
+            EC.invisibility_of_element_located(
+                (By.XPATH, '/html/body/div[2]/div/div/div/form/div/div/form[1]/div[1]/div[2]/button')
+            )
+        )
+        
+    def test_finish_setup(self):
+        """
+        Finish setup
+        
+        Note: the element in this point it will
+        be invisible for the user.
+        """
+        
+        WebDriverWait(self.driver, 10).until(
+            EC.invisibility_of_element_located(
+                (By.XPATH, '/html/body/div[2]/div/div/div/form/div/div/p[3]/button')
+            )
+        )
+        
     def tearDown(self):
         """
         Test Fisnished.

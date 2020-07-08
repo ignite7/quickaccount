@@ -51,7 +51,7 @@ class QuickAccount(unittest.TestCase):
             EC.element_to_be_clickable(
                 (By.ID, 'username')
             )
-        ).send_keys('pepe')
+        ).send_keys('sjdkjnankjdnajkdnaksjdnka')
         
         self.driver.switch_to.default_content()
         
@@ -89,6 +89,16 @@ class QuickAccount(unittest.TestCase):
                 (By.ID, 'confirmModalBtn')
             )
         ).click()
+        
+        time.sleep(100)
+        
+        # Click in finish setup
+        WebDriverWait(self.driver, 5).until(
+            EC.element_to_be_clickable(
+                (By.XPATH, '/html/body/div[2]/div/div/div/form/div/div/p[3]/button')
+            )
+        ).click()
+        
         
     def tearDown(self):
         """

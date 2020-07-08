@@ -119,15 +119,14 @@ class CreateRamdonAccount:
             )
         ).click()
         
-        # Needs to be fixed!
+        time.sleep(60)
+        
         WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable(
-                (By.XPATH, '/html/body/div[2]/div/div/div/form/div/div/div[2]/label/div/input')
+                (By.XPATH, '/html/body/div[2]/div/div/div/form/div/div/p[3]/button')
             )
         ).click()
-        
-        time.sleep(10)
-        
+         
         self.driver.close()
         self.driver.quit()
         
