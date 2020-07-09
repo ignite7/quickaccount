@@ -1,4 +1,5 @@
+quickaccount.egg-info/*
+app/__pycache__/*
 __pycache__/*
 .pytest_cache/*
 .env/*
-reports/*
