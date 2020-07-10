@@ -31,7 +31,7 @@ class QuickAccount(unittest.TestCase):
         Setup of the driver browser.
         """
         
-        self.driver = webdriver.Chrome(executable_path='./chromedriver')
+        self.driver = webdriver.Chrome('./app/chromedriver')
         self.driver.get('https://mail.protonmail.com/create/new?language=en')
         self.driver.maximize_window()
            
@@ -113,7 +113,7 @@ if __name__ == '__main__':
     unittest.main(
         verbosity=2,
         testRunner=HTMLTestRunner(
-            output='quickaccount_reports',
-            report_name='quickaccount_report'
+            output='united',
+            report_name='test_united'
         )
     )

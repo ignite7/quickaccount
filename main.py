@@ -1,5 +1,6 @@
 """
 CLI
+pip3 install --editable .
 """
 
 # Click
@@ -7,43 +8,71 @@ import click
 
 # Modules
 from app.services import CreateRamdonAccount
-from app.services import CreateManuallyAccount
+from app.services import CreateCustomAccount
 
 
-@click.command()
-@click.option(
-    '--random',
-    '-r',
-    type=click.Choice(
-        ['protonmail', 'temporary_email'],
-        case_sensitive=False
-    ),
+@click.group()
+def cli_random_account():
+    """
+    Handler to group the CLI number 1.
+    """ 
+     
+    pass
+
+
+@cli_random_account.command(
     help='Create random account.'
 )
-@click.option(
-    '--custom',
-    '-c',
-    type=click.Choice(
-        ['protonmail', 'temporary_email'],
-        case_sensitive=False
-    ),
+def random():
+    """
+    Create a random account.
+    """
+    
+    CreateRamdonAccount()
+
+
+@click.group()
+def cli_custom_account():
+    """
+    Handler to group the CLI number 2.
+    """ 
+     
+    pass
+
+
+@cli_custom_account.command(
     help='Create custom account.'
 )
 @click.option(
-    '--recovery_email',
-    '-e',
-    prompt=True,
-    help='''
-    This is used to recover your account if you 
-    get locked out or forget your password.
-    '''
+    '--username',
+    '-u',
+    required=True,
+    help='Use a custom username.'
 )
-def cli(random, custom, recovery_email):
-    if random != None:
-        CreateRamdonAccount('protonmail', recovery_email)
-                
-    else:
-        pass
+@click.option(
+    '--password',
+    '-p',
+    required=True,
+    help='Use a custom password.'
+)
+@click.option(
+    '--recovery_email',
+    '-r',
+    help='Recover your account if you lose the password.'
+)
+def custom(username, password, recovery_email):
+    """
+    Create custom account.
+    """
+    
+    CreateCustomAccount(username, password, recovery_email)
+
+
+cli = click.CommandCollection(sources=[
+    cli_random_account,
+    cli_custom_account
+])
+
 
 if __name__ == '__main__':
     cli()
