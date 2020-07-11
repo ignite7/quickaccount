@@ -7,8 +7,7 @@ pip3 install --editable .
 import click
 
 # Modules
-from app.services import CreateRamdonAccount
-from app.services import CreateCustomAccount
+from app.services import CreateAccount
 
 
 @click.group()
@@ -28,7 +27,11 @@ def random():
     Create a random account.
     """
     
-    CreateRamdonAccount()
+    create = CreateAccount()
+    create.create_data(
+        username=None,
+        password=None
+    )
 
 
 @click.group()
@@ -55,17 +58,13 @@ def cli_custom_account():
     required=True,
     help='Use a custom password.'
 )
-@click.option(
-    '--recovery_email',
-    '-r',
-    help='Recover your account if you lose the password.'
-)
-def custom(username, password, recovery_email):
+def custom(username, password):
     """
     Create custom account.
     """
     
-    CreateCustomAccount(username, password, recovery_email)
+    create = CreateAccount()
+    create.create_data(username, password)
 
 
 cli = click.CommandCollection(sources=[
