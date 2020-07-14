@@ -52,15 +52,17 @@ def resume(data):
         
     with open(path, 'a+') as file:
         file.write(
-            'QUICK ACCOUNTS:\n Username: {}\n Password: {}\n'.format(
+            '\nQUICKACCOUNT\n{}\nUsername: {}\n Password: {}\n {}\n'.format(
+                '-' * 50,
                 data['custom_username'] or data['random_username'],
-                data['custom_password'] or data['random_password']
+                data['custom_password'] or data['random_password'],
+                '-' * 50
             )
         )
         
     print(
         'The acccount has been created successfully, ',
-        'you can find the account in: {}'.format(path) 
+        'you can find the account in: \n{}'.format(path) 
     )
     
     
@@ -76,9 +78,8 @@ class CreateAccount:
         """
         
         self.driver = webdriver.Chrome('./app/chromedriver')
-        self.driver.get('https://mail.protonmail.com/create/new?language=en')
  
-    def create_data(self, username, password):
+    def get_data(self, service, username, password):
         """
         This method will create random information
         about the account.
@@ -102,11 +103,18 @@ class CreateAccount:
             'custom_password': password
         }
         
-        self.dom_elements(self.data)
+        if service == 'protonmail':
+            self.driver.get('https://mail.protonmail.com/create/new?language=en')
+            self.protonmail(self.data)
+            
+        elif service == 'hotmail':
+            self.driver.get('https://signup.live.com/')
+            self.hotmail(self.data)
         
-    def dom_elements(self, data):
+    def protonmail(self, data):
         """
-        This method copy the info in the DOM.
+        This method copy the info in the DOM 
+        to create protonmail account.
         """
         
         try:
@@ -178,10 +186,17 @@ class CreateAccount:
                 resume(data)
                     
             except TimeoutException:
-                print('Invalid captcha.')   
+                print(
+                    'Invalid captcha',
+                    'or proccess interrupted',
+                    'by human interaction.'
+                )   
                 
                 self.driver.close()
-                self.driver.quit()    
+                self.driver.quit()
+                
+                #Finish
+                resume(data)    
         
         except TimeoutException:
             print(
@@ -191,3 +206,16 @@ class CreateAccount:
             
             self.driver.close()
             self.driver.quit() 
+            
+    def hotmail(self, data):
+        """
+        This method copy the info in the DOM 
+        to create hotmail account.
+        """
+        
+        try:
+            pass
+        
+        except TimeoutException:
+            pass
+            

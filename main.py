@@ -22,13 +22,27 @@ def cli_random_account():
 @cli_random_account.command(
     help='Create random account.'
 )
-def random():
+@click.option(
+    '--service',
+    '-s',
+    type=click.Choice(
+        [
+            'protonmail',
+            'hotmail'
+        ],
+        case_sensitive=False
+    ),
+    required=True,
+    help='Choose the service to make an account.'
+)
+def random(service):
     """
     Create a random account.
     """
     
     create = CreateAccount()
-    create.create_data(
+    create.get_data(
+        service=service,
         username=None,
         password=None
     )
@@ -47,6 +61,19 @@ def cli_custom_account():
     help='Create custom account.'
 )
 @click.option(
+    '--service',
+    '-s',
+    type=click.Choice(
+        [
+            'protonmail',
+            'hotmail'
+        ],
+        case_sensitive=False
+    ),
+    required=True,
+    help='Choose the service to make an account.'
+)
+@click.option(
     '--username',
     '-u',
     required=True,
@@ -58,13 +85,13 @@ def cli_custom_account():
     required=True,
     help='Use a custom password.'
 )
-def custom(username, password):
+def custom(service, username, password):
     """
     Create custom account.
     """
     
     create = CreateAccount()
-    create.create_data(username, password)
+    create.get_data(service, username, password)
 
 
 cli = click.CommandCollection(sources=[
