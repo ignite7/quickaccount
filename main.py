@@ -20,31 +20,32 @@ def cli_random_account():
 
 
 @cli_random_account.command(
-    help='Create random account.'
+    help='Create protonmail account.'
 )
 @click.option(
-    '--service',
-    '-s',
-    type=click.Choice(
-        [
-            'protonmail',
-            'hotmail'
-        ],
-        case_sensitive=False
-    ),
-    required=True,
-    help='Choose the service to make an account.'
+    '--username',
+    '-u',
+    type=(str),
+    help='Choose specific username.'
 )
-def random(service):
+@click.option(
+    '--password',
+    '-p',
+    type=(str),
+    help='Choose specific password.'
+)
+def protonmail(username, password):
     """
     Create a random account.
     """
     
     create = CreateAccount()
     create.get_data(
-        service=service,
-        username=None,
-        password=None
+        service='protonmail',
+        username=username,
+        password=password,
+        first_name=None,
+        last_name=None
     )
 
 
@@ -61,37 +62,42 @@ def cli_custom_account():
     help='Create custom account.'
 )
 @click.option(
-    '--service',
-    '-s',
-    type=click.Choice(
-        [
-            'protonmail',
-            'hotmail'
-        ],
-        case_sensitive=False
-    ),
-    required=True,
-    help='Choose the service to make an account.'
-)
-@click.option(
     '--username',
     '-u',
-    required=True,
-    help='Use a custom username.'
+    type=(str),
+    help='Choose specific username.'
 )
 @click.option(
     '--password',
     '-p',
-    required=True,
-    help='Use a custom password.'
+    type=(str),
+    help='Choose specific password.'
 )
-def custom(service, username, password):
+@click.option(
+    '--first-name',
+    '-f',
+    type=(str),
+    help='Choose specific first name.'
+)
+@click.option(
+    '--last-name',
+    '-l',
+    type=(str),
+    help='Choose specific first name.'
+)
+def hotmail(username, password, first_name, last_name):
     """
     Create custom account.
     """
     
     create = CreateAccount()
-    create.get_data(service, username, password)
+    create.get_data(
+        service='hotmail',
+        username=username,
+        password=password,
+        first_name=first_name,
+        last_name=last_name
+    )
 
 
 cli = click.CommandCollection(sources=[

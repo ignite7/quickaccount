@@ -52,8 +52,8 @@ def resume(data):
         
     with open(path, 'a+') as file:
         file.write(
-            '\nQUICKACCOUNT\n{}\nUsername: {}\n Password: {}\n {}\n'.format(
-                '-' * 50,
+            '\n{}\nUsername: {}\n Password: {}\n {}\n'.format(
+                data['service'].upper(),
                 data['custom_username'] or data['random_username'],
                 data['custom_password'] or data['random_password'],
                 '-' * 50
@@ -79,7 +79,7 @@ class CreateAccount:
         
         self.driver = webdriver.Chrome('./app/chromedriver')
  
-    def get_data(self, service, username, password):
+    def get_data(self, **info):
         """
         This method will create random information
         about the account.
@@ -97,17 +97,20 @@ class CreateAccount:
         joiner_password = abc_up + number + symbols + abc_lw
         
         self.data = {
-            'random_username': ''.join(sorted(joiner_username)),
-            'random_password': ''.join(sorted(joiner_password)),
-            'custom_username': username,
-            'custom_password': password
+            'service': info['service'],
+            'r_username': ''.join(sorted(joiner_username)),
+            'r_password': ''.join(sorted(joiner_password)),
+            'c_username': info['username'],
+            'c_password': info['password'],
+            'c_first_name': info['first_name'],
+            'c_last_name': info['last_name']
         }
         
-        if service == 'protonmail':
+        if info['service'] == 'protonmail':
             self.driver.get('https://mail.protonmail.com/create/new?language=en')
             self.protonmail(self.data)
             
-        elif service == 'hotmail':
+        elif info['service'] == 'hotmail':
             self.driver.get('https://signup.live.com/')
             self.hotmail(self.data)
         
@@ -129,7 +132,7 @@ class CreateAccount:
                 EC.element_to_be_clickable(
                     (By.ID, 'username')
                 )
-            ).send_keys(data['custom_username'] or data['random_username'])
+            ).send_keys(data['c_username'] or data['r_username'])
             
             self.driver.switch_to.default_content()
             
@@ -138,13 +141,13 @@ class CreateAccount:
                 EC.element_to_be_clickable(
                     (By.ID, 'password')
                 )
-            ).send_keys(data['custom_password'] or data['random_password'])
+            ).send_keys(data['c_password'] or data['r_password'])
             
             WebDriverWait(self.driver, 10).until(
                 EC.element_to_be_clickable(
                     (By.ID, 'passwordc')
                 )
-            ).send_keys(data['custom_password'] or data['random_password'])
+            ).send_keys(data['c_password'] or data['r_password'])
             
             # Click in submit button
             WebDriverWait(self.driver, 10).until(
