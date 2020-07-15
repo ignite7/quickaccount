@@ -34,7 +34,13 @@ def cli_random_account():
     type=(str),
     help='Choose specific password.'
 )
-def protonmail(username, password):
+@click.option(
+    '--recovery-email',
+    '-r',
+    type=(str),
+    help='Recover your account.'
+)
+def protonmail(username, password, recovery_email):
     """
     Create a random account.
     """
@@ -44,6 +50,7 @@ def protonmail(username, password):
         service='protonmail',
         username=username,
         password=password,
+        recovery_email=recovery_email,
         first_name=None,
         last_name=None
     )
@@ -95,6 +102,7 @@ def hotmail(username, password, first_name, last_name):
         service='hotmail',
         username=username,
         password=password,
+        recovery_email=None,
         first_name=first_name,
         last_name=last_name
     )

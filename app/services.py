@@ -14,7 +14,9 @@ from selenium.common.exceptions import TimeoutException
 import time
 import random
 import string
-import getpass
+
+# Modules
+from .test_accounts import test_protonmail_account
 
 
 def resolve_captcha():
@@ -38,33 +40,6 @@ def resolve_captcha():
             confirm == 'Y':
                 
                 break
-
-
-def resume(data):
-    """
-    It going to shows the resume of the
-    random data.
-    """
-    
-    path = '/home/{}/quickaccount.txt'.format(
-        getpass.getuser()
-    )
-        
-    with open(path, 'a+') as file:
-        file.write(
-            '\n{}\nUsername: {}\n Password: {}\n {}\n'.format(
-                data['service'].upper(),
-                data['custom_username'] or data['random_username'],
-                data['custom_password'] or data['random_password'],
-                '-' * 50
-            )
-        )
-        
-    print(
-        'The acccount has been created successfully, ',
-        'you can find the account in: \n{}'.format(path) 
-    )
-    
     
 class CreateAccount:
     """
@@ -103,7 +78,8 @@ class CreateAccount:
             'c_username': info['username'],
             'c_password': info['password'],
             'c_first_name': info['first_name'],
-            'c_last_name': info['last_name']
+            'c_last_name': info['last_name'],
+            'c_recovery_email': info['recovery_email']
         }
         
         if info['service'] == 'protonmail':
@@ -122,13 +98,13 @@ class CreateAccount:
         
         try:
             # Write username 
-            WebDriverWait(self.driver, 10).until(
+            WebDriverWait(self.driver, 3).until(
                 EC.frame_to_be_available_and_switch_to_it(
                     (By.CLASS_NAME, 'top')
                 )
             )
         
-            WebDriverWait(self.driver, 10).until(
+            WebDriverWait(self.driver, 3).until(
                 EC.element_to_be_clickable(
                     (By.ID, 'username')
                 )
@@ -137,78 +113,78 @@ class CreateAccount:
             self.driver.switch_to.default_content()
             
             # Write password
-            WebDriverWait(self.driver, 10).until(
+            WebDriverWait(self.driver, 3).until(
                 EC.element_to_be_clickable(
                     (By.ID, 'password')
                 )
             ).send_keys(data['c_password'] or data['r_password'])
             
-            WebDriverWait(self.driver, 10).until(
+            WebDriverWait(self.driver, 3).until(
                 EC.element_to_be_clickable(
                     (By.ID, 'passwordc')
                 )
             ).send_keys(data['c_password'] or data['r_password'])
             
-            # Click in submit button
-            WebDriverWait(self.driver, 10).until(
+            # Write recovery email
+            WebDriverWait(self.driver, 3).until(
                 EC.frame_to_be_available_and_switch_to_it(
-                    (By.XPATH, '/html/body/div[2]/div/div/div/div[1]/form/div[2]/section/div/div[2]/iframe')
+                    (By.CLASS_NAME, 'bottom')
                 )
             )
             
-            WebDriverWait(self.driver, 10).until(
+            WebDriverWait(self.driver, 3).until(
                 EC.element_to_be_clickable(
-                    (By.XPATH, '/html/body/div/div/footer/button')
+                    (By.ID, 'notificationEmail')
+                )
+            ).send_keys(data['c_recovery_email'] or '')
+        
+            # Click in create account button
+            WebDriverWait(self.driver, 3).until(
+                EC.element_to_be_clickable(
+                    (By.NAME, 'submitBtn')
                 )
             ).click()
             
             self.driver.switch_to.default_content()
             
             # Click in submit modal button
-            WebDriverWait(self.driver, 10).until(
+            WebDriverWait(self.driver, 3).until(
                 EC.element_to_be_clickable(
                     (By.ID, 'confirmModalBtn')
                 )
             ).click()
             
-            # Resolve captcha
+            # Finish setup
             resolve_captcha()
-            
-            try:
-                # Click in finish setup
-                WebDriverWait(self.driver, 10).until(
-                    EC.element_to_be_clickable(
-                        (By.XPATH, '/html/body/div[2]/div/div/div/form/div/div/p[3]/button')
-                    )
-                ).click()
-                    
-                self.driver.close()
-                self.driver.quit()
-                    
-                # Finish
-                resume(data)
-                    
-            except TimeoutException:
-                print(
-                    'Invalid captcha',
-                    'or proccess interrupted',
-                    'by human interaction.'
-                )   
-                
-                self.driver.close()
-                self.driver.quit()
-                
-                #Finish
-                resume(data)    
+            self.finish_setup(data)
         
         except TimeoutException:
-            print(
-                'Username already used',
-                'or weak password.'
-            )
+            # Finish setup
+            resolve_captcha()
+            self.finish_setup(data)
+                
+    def finish_setup(self, data):
+        submit = '/html/body/div[2]/div/div/div/form/div/div/p[3]/button'
+        
+        try:
+            # Click in create account 
+            WebDriverWait(self.driver, 5).until(
+                EC.element_to_be_clickable(
+                    (By.XPATH, submit)
+                )
+            ).click()
             
-            self.driver.close()
-            self.driver.quit() 
+            print('Testing account...')
+            time.sleep(5)
+            test_protonmail_account(data)
+                
+        except TimeoutException:
+            print(
+                'Procces interrupted by human intervention, ',
+                'testing account...'
+            )
+            time.sleep(5)
+            test_protonmail_account(data)
             
     def hotmail(self, data):
         """
