@@ -2,13 +2,14 @@
 Setup
 """
 
-# Setup
+# Libraries
 from setuptools import setup
 
 
 setup(
+    author='Sergio van Berkel',
     name='quickaccount',
-    version='0.1',
+    version='0.1v',
     py_modules=['main'],
     install_requires=[
         'click',

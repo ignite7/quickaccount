@@ -1,6 +1,5 @@
 """
 CLI
-pip3 install --editable .
 """
 
 # Click
@@ -14,8 +13,8 @@ from app.services import CreateAccount
 def cli_random_account():
     """
     Handler to group the CLI number 1.
-    """ 
-     
+    """
+
     pass
 
 
@@ -42,9 +41,9 @@ def cli_random_account():
 )
 def protonmail(username, password, recovery_email):
     """
-    Create a random account.
+    Create protonmail account.
     """
-    
+
     create = CreateAccount()
     create.get_data(
         service='protonmail',
@@ -52,7 +51,8 @@ def protonmail(username, password, recovery_email):
         password=password,
         recovery_email=recovery_email,
         first_name=None,
-        last_name=None
+        last_name=None,
+        domain=None
     )
 
 
@@ -60,13 +60,13 @@ def protonmail(username, password, recovery_email):
 def cli_custom_account():
     """
     Handler to group the CLI number 2.
-    """ 
-     
+    """
+
     pass
 
 
 @cli_custom_account.command(
-    help='Create custom account.'
+    help='Create hotmail account.'
 )
 @click.option(
     '--username',
@@ -92,11 +92,20 @@ def cli_custom_account():
     type=(str),
     help='Choose specific first name.'
 )
-def hotmail(username, password, first_name, last_name):
+@click.option(
+    '--domain',
+    '-d',
+    type=click.Choice(
+        ['hotmail.com', 'outlook.com'],
+        case_sensitive=False
+    ),
+    help='Choose specific domain.'
+)
+def hotmail(username, password, first_name, last_name, domain):
     """
-    Create custom account.
+    Create hotmail account.
     """
-    
+
     create = CreateAccount()
     create.get_data(
         service='hotmail',
@@ -104,7 +113,66 @@ def hotmail(username, password, first_name, last_name):
         password=password,
         recovery_email=None,
         first_name=first_name,
-        last_name=last_name
+        last_name=last_name,
+        domain=domain
+    )
+
+
+@cli_custom_account.command(
+    help='Create fastmail account.'
+)
+@click.option(
+    '--username',
+    '-u',
+    type=(str),
+    help='Choose specific username.'
+)
+@click.option(
+    '--password',
+    '-p',
+    type=(str),
+    help='Choose specific password.'
+)
+@click.option(
+    '--first-name',
+    '-f',
+    type=(str),
+    help='Choose specific first name.'
+)
+@click.option(
+    '--domain',
+    '-d',
+    type=click.Choice(
+        [
+            'fastmail.com', 'fastmail.cn',
+            'fastmail.co.uk', 'fastmail.com.au',
+            'fastmail.de', 'fastmail.es',
+            'fastmail.fm', 'fastmail.fr',
+            'fastmail.im', 'fastmail.in',
+            'fastmail.jp', 'fastmail.mx',
+            'fastmail.net', 'fastmail.nl',
+            'fastmail.org', 'fastmail.se',
+            'fastmail.to', 'fastmail.tw',
+            'fastmail.uk', 'fastmail.us'
+        ],
+        case_sensitive=False
+    ),
+    help='Choose specific domain.'
+)
+def fastmail(username, password, first_name, domain):
+    """
+    Create fastmail account.
+    """
+
+    create = CreateAccount()
+    create.get_data(
+        service='fastmail',
+        username=username,
+        password=password,
+        recovery_email=None,
+        first_name=first_name,
+        last_name=None,
+        domain=domain
     )
 
 

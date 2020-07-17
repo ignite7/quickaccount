@@ -1,5 +1,4 @@
+click
 selenium
 webdriver-manager
 pyunitreport
-click
-clipboard
