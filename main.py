@@ -41,12 +41,19 @@ def cli_account():
     type=(str),
     help='Recover your account.'
 )
-def protonmail(username, password, recovery_email):
+@click.option(
+    '--proxy',
+    '-P',
+    is_flag=True,
+    default=False,
+    help='Use SSL proxy.'
+)
+def protonmail(username, password, recovery_email, proxy):
     """
     Create protonmail account.
     """
 
-    create = CreateAccount()
+    create = CreateAccount(proxy)
     create.get_data(
         service='protonmail',
         username=username,
@@ -94,12 +101,19 @@ def protonmail(username, password, recovery_email):
     ),
     help='Choose specific domain.'
 )
-def hotmail(username, password, first_name, last_name, domain):
+@click.option(
+    '--proxy',
+    '-P',
+    is_flag=True,
+    default=False,
+    help='Use SSL proxy.'
+)
+def hotmail(username, password, first_name, last_name, domain, proxy):
     """
     Create hotmail account.
     """
 
-    create = CreateAccount()
+    create = CreateAccount(proxy)
     create.get_data(
         service='hotmail',
         username=username,
@@ -152,12 +166,19 @@ def hotmail(username, password, first_name, last_name, domain):
     ),
     help='Choose specific domain.'
 )
-def fastmail(username, password, first_name, domain):
+@click.option(
+    '--proxy',
+    '-P',
+    is_flag=True,
+    default=False,
+    help='Use SSL proxy.'
+)
+def fastmail(username, password, first_name, domain, proxy):
     """
     Create fastmail account.
     """
 
-    create = CreateAccount()
+    create = CreateAccount(proxy)
     create.get_data(
         service='fastmail',
         username=username,

@@ -9,6 +9,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.proxy import Proxy, ProxyType
 from selenium.common.exceptions import TimeoutException
 
 # Utilities
@@ -50,12 +51,57 @@ class CreateAccount:
     the user.
     """
 
-    def __init__(self):
+    def __init__(self, proxy):
         """
         Initialize the web driver.
         """
 
-        self.driver = webdriver.Chrome(ChromeDriverManager().install())
+        if proxy:
+            PROXY = self.get_proxy()
+
+            custom_proxy = Proxy()
+            custom_proxy.proxy_type = ProxyType.MANUAL
+            custom_proxy.ssl_proxy = PROXY
+
+            capabilities = webdriver.DesiredCapabilities.CHROME
+            custom_proxy.add_to_capabilities(capabilities)
+
+            self.driver = webdriver.Chrome(
+                ChromeDriverManager().install(),
+                desired_capabilities=capabilities
+            )
+
+        else:
+            self.driver = webdriver.Chrome(ChromeDriverManager().install())
+
+    def get_proxy(self):
+        """
+        This method it going to take care
+        of bring the proxy.
+        """
+
+        try:
+            driver = webdriver.Chrome(ChromeDriverManager().install())
+            driver.get('https://us-proxy.org/')
+
+            https = driver.find_element_by_css_selector(
+                '#proxylisttable > thead > tr > th.hx.sorting'
+            ); https.click(); https.click()
+
+            ip = driver.find_element_by_css_selector(
+                '#proxylisttable > tbody > tr:nth-child(1) > td:nth-child(1)'
+            ).text
+
+            port = driver.find_element_by_css_selector(
+                '#proxylisttable > tbody > tr:nth-child(1) > td:nth-child(2)'
+            ).text
+
+            joiner_proxy = '{}:{}'.format(ip, port)
+
+        except TimeoutException:
+            print('Proxy service does not working now, try later.')
+
+        return joiner_proxy
 
     def get_data(self, **info):
         """
@@ -103,7 +149,8 @@ class CreateAccount:
             'f_domain': fastmail_domain,
             'r_day': str(day),
             'r_month': str(month),
-            'r_year': str(year)
+            'r_year': str(year),
+            'c_email': 'NOT'
         }
 
         if info['service'] == 'protonmail':
@@ -126,7 +173,7 @@ class CreateAccount:
 
         try:
             # Write username
-            WebDriverWait(self.driver, 3).until(
+            WebDriverWait(self.driver, 10).until(
                 EC.frame_to_be_available_and_switch_to_it(
                     (By.CLASS_NAME, 'top')
                 )
@@ -209,7 +256,7 @@ class CreateAccount:
             ).click()
 
             print('Testing account...')
-            time.sleep(5)
+            time.sleep(10)
             test_protonmail_account(data, self.driver)
 
         except TimeoutException:
@@ -217,7 +264,7 @@ class CreateAccount:
                 'Procces interrupted by human intervention, ',
                 'testing account...'
             )
-            time.sleep(5)
+            time.sleep(10)
             test_protonmail_account(data, self.driver)
 
     def hotmail(self, data):
@@ -335,7 +382,7 @@ class CreateAccount:
                 ).click()
 
                 print('Testing account...')
-                time.sleep(5)
+                time.sleep(10)
                 test_hotmail_account(data, self.driver)
 
             except TimeoutException:
@@ -343,7 +390,7 @@ class CreateAccount:
                     'Procces interrupted by human intervention, ',
                     'testing account...'
                 )
-                time.sleep(5)
+                time.sleep(10)
                 test_hotmail_account(data, self.driver)
 
         except TimeoutException:
@@ -415,7 +462,7 @@ class CreateAccount:
 
             # Finish setup
             print('Testing account...')
-            time.sleep(2)
+            time.sleep(5)
             test_fastmail_account(data, self.driver)
 
         except TimeoutException:

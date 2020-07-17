@@ -31,7 +31,7 @@ def resume(data):
         '''.format(
             '-' * 50,
             data['service'].upper(),
-            data['c_email'] or 'NOT',
+            data['c_email'],
             data['c_username'] or data['r_username'],
             data['c_password'] or data['r_password'],
             data['c_first_name'] or 'NOT',
