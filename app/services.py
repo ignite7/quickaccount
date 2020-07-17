@@ -210,7 +210,7 @@ class CreateAccount:
 
             print('Testing account...')
             time.sleep(5)
-            test_protonmail_account(data)
+            test_protonmail_account(data, self.driver)
 
         except TimeoutException:
             print(
@@ -218,7 +218,7 @@ class CreateAccount:
                 'testing account...'
             )
             time.sleep(5)
-            test_protonmail_account(data)
+            test_protonmail_account(data, self.driver)
 
     def hotmail(self, data):
         """
@@ -336,7 +336,7 @@ class CreateAccount:
 
                 print('Testing account...')
                 time.sleep(5)
-                test_hotmail_account(data)
+                test_hotmail_account(data, self.driver)
 
             except TimeoutException:
                 print(
@@ -344,7 +344,7 @@ class CreateAccount:
                     'testing account...'
                 )
                 time.sleep(5)
-                test_hotmail_account(data)
+                test_hotmail_account(data, self.driver)
 
         except TimeoutException:
             print('Username or password invalid.')
@@ -416,7 +416,7 @@ class CreateAccount:
             # Finish setup
             print('Testing account...')
             time.sleep(2)
-            test_fastmail_account(data)
+            test_fastmail_account(data, self.driver)
 
         except TimeoutException:
             print('Username or password invalid.')

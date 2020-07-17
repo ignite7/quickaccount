@@ -50,11 +50,7 @@ def resume(data):
     )
 
 
-# Driver
-driver = webdriver.Chrome(ChromeDriverManager().install())
-
-
-def test_protonmail_account(data):
+def test_protonmail_account(data, driver):
     """
     Test if protonmail account has
     passed or not.
@@ -102,7 +98,7 @@ def test_protonmail_account(data):
     driver.quit()
 
 
-def test_hotmail_account(data):
+def test_hotmail_account(data, driver):
     """
     Test if hotmail account has
     passed or not.
@@ -157,7 +153,7 @@ def test_hotmail_account(data):
     driver.quit()
 
 
-def test_fastmail_account(data):
+def test_fastmail_account(data, driver):
     """
     Test if fastmail account has
     passed or not.

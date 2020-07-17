@@ -9,8 +9,10 @@ import click
 from app.services import CreateAccount
 
 
-@click.group()
-def cli_random_account():
+@click.group(
+    help='Choose a provider.'
+)
+def cli_account():
     """
     Handler to group the CLI number 1.
     """
@@ -18,7 +20,7 @@ def cli_random_account():
     pass
 
 
-@cli_random_account.command(
+@cli_account.command(
     help='Create protonmail account.'
 )
 @click.option(
@@ -56,16 +58,7 @@ def protonmail(username, password, recovery_email):
     )
 
 
-@click.group()
-def cli_custom_account():
-    """
-    Handler to group the CLI number 2.
-    """
-
-    pass
-
-
-@cli_custom_account.command(
+@cli_account.command(
     help='Create hotmail account.'
 )
 @click.option(
@@ -118,7 +111,7 @@ def hotmail(username, password, first_name, last_name, domain):
     )
 
 
-@cli_custom_account.command(
+@cli_account.command(
     help='Create fastmail account.'
 )
 @click.option(
@@ -176,11 +169,5 @@ def fastmail(username, password, first_name, domain):
     )
 
 
-cli = click.CommandCollection(sources=[
-    cli_random_account,
-    cli_custom_account
-])
-
-
 if __name__ == '__main__':
-    cli()
+    cli_account()
