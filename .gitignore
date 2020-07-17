@@ -1,6 +1,5 @@
 quickaccount.egg-info/*
 app/__pycache__/*
-app/chromedriver
 __pycache__/*
 .pytest_cache/*
 .env/*
