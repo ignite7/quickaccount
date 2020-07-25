@@ -1,6 +1,6 @@
 # Quickaccount 📨
 
-If you want to make an random account easily this **_CLI_** it wiil be of great
+If you want to make an random account easily this **CLI** it wiil be of great
 help for you, as I said before if you want to make a quick account you can do it
 with the option **_Fastmail_** that's simple email provider that allows you
 create an account without captcha but if you want use others known providers
@@ -9,8 +9,8 @@ captcha but don't worry if you aren't a robot you can pass it.
 
 ## Setup 🧲
 
-- This only for Linux enviroment if you have **Mac** or **Windows** you
-can a virtual machine.
+- This is only for Linux enviroment if you have **Mac** or **Windows** you
+can run on a virtual machine.
 
 ```bash
 git clone https://github.com/ignite7/quickaccount.git
@@ -52,6 +52,10 @@ from your **_Terminal_**
     ```bash
     quickaccount --help
     ```
+
+## To do 🔮
+
+- [] More service providers
 
 ## Thanks 👏🏻
 
