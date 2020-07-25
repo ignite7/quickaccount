@@ -12,7 +12,7 @@ from app.services import CreateAccount
 @click.group(
     help='Choose a provider.'
 )
-def cli_account():
+def cli():
     """
     Handler to group the CLI number 1.
     """
@@ -20,7 +20,7 @@ def cli_account():
     pass
 
 
-@cli_account.command(
+@cli.command(
     help='Create protonmail account.'
 )
 @click.option(
@@ -65,7 +65,7 @@ def protonmail(username, password, recovery_email, proxy):
     )
 
 
-@cli_account.command(
+@cli.command(
     help='Create hotmail account.'
 )
 @click.option(
@@ -125,7 +125,7 @@ def hotmail(username, password, first_name, last_name, domain, proxy):
     )
 
 
-@cli_account.command(
+@cli.command(
     help='Create fastmail account.'
 )
 @click.option(
@@ -191,4 +191,4 @@ def fastmail(username, password, first_name, domain, proxy):
 
 
 if __name__ == '__main__':
-    cli_account()
+    cli()
