@@ -55,7 +55,7 @@ from your **_Terminal_**
 
 ## To do 🔮
 
-- [] More service providers
+- More service providers
 
 ## Thanks 👏🏻
 
