@@ -9,9 +9,7 @@ captcha but don't worry if you aren't a robot you can pass it.
 
 ## Setup 🧲
 
-- This is only for Linux enviroment but a little tip if you have **_Mac_** or **_Windows_** you can 
-run it on a virtual machine 😜. It's **important** to know you need to have **_chrome_** 
-installed on your machine or get the [**_chromedriver stable release_**](https://chromedriver.storage.googleapis.com/index.html?path=84.0.4147.30/) 
+- It's **important** to know you need to have [**_chrome_**](https://www.google.com/chrome/) installed on your machine or get the [**_chromedriver stable release_**](https://chromedriver.storage.googleapis.com/index.html?path=84.0.4147.30/) 
 
 ```bash
 git clone https://github.com/ignite7/quickaccount.git
